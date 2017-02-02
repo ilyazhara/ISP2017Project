@@ -24,7 +24,7 @@ def saveall(JP_pred, JE_pred, UP_pred, UE_pred):
     savearray(4, 11, UE_pred, 'with_tt_ue.txt')
 
 
-def get_neighbors(idx, sizes, up, ue, mode):
+def get_neighbors(idx, sizes, up, ue, mode, up_x, up_y, ue_x, ue_y):
     up = up.astype(int)
     ue = ue.astype(int)
     neighbors = list()

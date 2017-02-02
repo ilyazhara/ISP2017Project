@@ -2,14 +2,16 @@ import pandas as pd
 import numpy as np
 from itertools import product
 
+from helper_func import *
+
 def VI(n=11, 
-		   Delta_max=1e-2, 
-		   delta_max=1e-2,
-		   gamma=0.7,
-		   K_max=50,
-		   k_max=100,
-		   from_=0,
-		   to_=11)
+	   Delta_max=1e-2, 
+	   delta_max=1e-2,
+	   gamma=0.7,
+	   K_max=50,
+	   k_max=100,
+	   from_=0,
+	   to_=11):
 	
 	JP_pred = np.zeros((n, n, n, n))
 	JE_pred = np.zeros((n, n, n, n))
@@ -46,7 +48,9 @@ def VI(n=11,
 	    k = 0
 	    while ((delta > delta_max) and (k < k_max)):
 	        for idx in product(range(n), repeat=4):
-	            neighbors, pos_list = get_neighbors(idx, sizes, up=np.zeros(2), ue=UE_pred[idx], mode='p')
+	            neighbors, pos_list = get_neighbors(idx, sizes, up=np.zeros(2), 
+	            	ue=UE_pred[idx], mode='p', up_x=up_x, up_y=up_y,
+	            	ue_x=ue_x, ue_y=ue_y)
 	            JP_next[idx], UP_next[idx] = solve(neighbors, pos_list, G, JP_pred, mode='p')
 	        k += 1
 	        delta = np.linalg.norm(JP_next - JP_pred) ** 2
@@ -57,7 +61,9 @@ def VI(n=11,
 	    k = 0
 	    while ((delta > delta_max) and (k < k_max)):
 	        for idx in product(range(n), repeat=4):
-	            neighbors, pos_list = get_neighbors(idx, sizes, up=UP_pred[idx], ue=np.zeros(2), mode='e')
+	            neighbors, pos_list = get_neighbors(idx, sizes, up=UP_pred[idx], 
+	            	ue=np.zeros(2), mode='e', up_x=up_x, up_y=up_y,
+	            	ue_x=ue_x, ue_y=ue_y)
 	            JE_next[idx], UE_next[idx] = solve(neighbors, pos_list, G, JE_pred, mode='e')
 	        k += 1
 	        delta = np.linalg.norm(JE_next - JE_pred) ** 2
@@ -74,11 +80,6 @@ def VI(n=11,
 	    f_r.write('K ' + str(K) + ' ' + str(Delta_p) + ' ' + str(Delta_e) + '\n')  
 	f_r.close()
 
-
-import pandas as pd
-import numpy as np
-from itertools import product
-
 def TT_VI(n=11, 
 		   Delta_max=1e-2, 
 		   delta_max=1e-2,
@@ -87,7 +88,7 @@ def TT_VI(n=11,
 		   k_max=100,
 		   from_=0,
 		   to_=11,
-		   eps=1e-3)
+		   eps=1e-3):
 	
 	JP_pred = np.zeros((n, n, n, n))
 	JE_pred = np.zeros((n, n, n, n))
