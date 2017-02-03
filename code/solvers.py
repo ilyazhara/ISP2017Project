@@ -79,6 +79,7 @@ def VI(n=11,
 	    K += 1
 	    f_r.write('K ' + str(K) + ' ' + str(Delta_p) + ' ' + str(Delta_e) + '\n')  
 	f_r.close()
+    saveAll(n, JP, JE, UP, UE)
 
 def TT_VI(n=11, 
 		   Delta_max=1e-2, 
@@ -180,3 +181,4 @@ def TT_VI(n=11,
 	    K += 1
 	    f2_r.write('K ' + str(K) + ' ' + str(Delta_p) + ' ' + str(Delta_e) + '\n')  
 	f2_r.close()
+    saveAll(n, JP, JE, UP, UE)
