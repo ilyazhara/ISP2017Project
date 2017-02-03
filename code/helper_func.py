@@ -23,11 +23,11 @@ def save_U(n, U, filename):
     f.close() 
 
 
-def saveAll(n, JP, JE, UP, UE):
-    save_J(n, JP, 'with_tt_jp.txt')
-    save_J(n, JE, 'with_tt_je.txt')
-    save_U(n, UP, 'with_tt_up.txt')
-    save_U(n, UE, 'with_tt_ue.txt')
+def saveAll(n, JP, JE, UP, UE, mode='without'):
+    save_J(n, JP, mode + '_tt_jp.txt')
+    save_J(n, JE, mode + '_tt_je.txt')
+    save_U(n, UP, mode + '_tt_up.txt')
+    save_U(n, UE, mode + '_tt_ue.txt')
 
 
 def read_J(n, filename):
@@ -142,7 +142,7 @@ def tt_cross_P(V):
         idx2 = (int(V[i, 0]), int(V[i, 1]), int(V[i, 2]), int(V[i, 3]), 1)
         neighbors, pos_list = get_neighbors(idx, sizes, up=np.zeros(2), 
                                             ue=np.array([UE_pred[idx1], UE_pred[idx2]]), mode='p')
-        value, positions = solve(neighbors, pos_list, G, JP_pred, mode='p')
+        value, positions = solve(neighbors, pos_list, G, JP_pred, mode='p', gamma=gamma)
         result[i, 0] = value
         result[i, 1] = positions[0]
         result[i, 2] = positions[1]
@@ -158,7 +158,7 @@ def tt_cross_E(V):
         idx2 = (int(V[i, 0]), int(V[i, 1]), int(V[i, 2]), int(V[i, 3]), 1)
         neighbors, pos_list = get_neighbors(idx, sizes, 
                                             up=np.array([UP_pred[idx1], UP_pred[idx2]]), ue=np.zeros(2), mode='e')
-        value, positions = solve(neighbors, pos_list, G, JE_pred, mode='e')
+        value, positions = solve(neighbors, pos_list, G, JE_pred, mode='e', gamma=gamma)
         result[i, 0] = value
         result[i, 1] = positions[0]
         result[i, 2] = positions[1]
