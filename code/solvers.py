@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import tt
 from itertools import product
 
 from helper_func import *
@@ -91,7 +92,7 @@ def TT_VI(n=11,
 		   k_max=100,
 		   from_=0,
 		   to_=11,
-		   eps=1e-3):
+		   eps=1e-2):
 	
 	JP_pred = np.zeros((n, n, n, n))
 	JE_pred = np.zeros((n, n, n, n))
