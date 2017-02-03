@@ -37,7 +37,7 @@ def VI(n=11,
 	    JE_pred[idx] = (val[0] - val[2]) ** 2 + (val[1] - val[3]) ** 2
 	    G[idx] = (val[0] - val[2]) ** 2 + (val[1] - val[3]) ** 2 + 10
 
-	f_r = open('without_tt_report.txt', 'w')
+	f_r = open(os.path.join('results', 'without_tt_report.txt'), 'w')
 	JP = JP_pred.copy()
 	JE = JE_pred.copy()
 	Delta_p = Delta_max + 1
@@ -51,7 +51,7 @@ def VI(n=11,
 	            neighbors, pos_list = get_neighbors(idx, sizes, up=np.zeros(2), 
 	            	ue=UE_pred[idx], mode='p', up_x=up_x, up_y=up_y,
 	            	ue_x=ue_x, ue_y=ue_y)
-	            JP_next[idx], UP_next[idx] = solve(neighbors, pos_list, G, JP_pred, mode='p')
+	            JP_next[idx], UP_next[idx] = solve(neighbors, pos_list, G, JP_pred, mode='p', gamma=gamma)
 	        k += 1
 	        delta = np.linalg.norm(JP_next - JP_pred) ** 2
 	        JP_pred = JP_next.copy()
@@ -64,7 +64,7 @@ def VI(n=11,
 	            neighbors, pos_list = get_neighbors(idx, sizes, up=UP_pred[idx], 
 	            	ue=np.zeros(2), mode='e', up_x=up_x, up_y=up_y,
 	            	ue_x=ue_x, ue_y=ue_y)
-	            JE_next[idx], UE_next[idx] = solve(neighbors, pos_list, G, JE_pred, mode='e')
+	            JE_next[idx], UE_next[idx] = solve(neighbors, pos_list, G, JE_pred, mode='e', gamma=gamma)
 	        k += 1
 	        delta = np.linalg.norm(JE_next - JE_pred) ** 2
 	        JE_pred = JE_next.copy()
@@ -79,7 +79,8 @@ def VI(n=11,
 	    K += 1
 	    f_r.write('K ' + str(K) + ' ' + str(Delta_p) + ' ' + str(Delta_e) + '\n')  
 	f_r.close()
-    saveAll(n, JP, JE, UP, UE)
+	saveAll(n, JP, JE, UP, UE, 'without')
+	return JP, JE, UP, UE
 
 def TT_VI(n=11, 
 		   Delta_max=1e-2, 
@@ -132,7 +133,7 @@ def TT_VI(n=11,
 	    JE_pred[idx] = (val[0] - val[2]) ** 2 + (val[1] - val[3]) ** 2
 	    G[idx] = (val[0] - val[2]) ** 2 + (val[1] - val[3]) ** 2 + 10
 
-	f2_r = open('with_tt_report.txt', 'w')
+	f2_r = open(os.path.join('results', 'with_tt_report.txt'), 'w')
 	JP = JP_pred.copy()
 	JE = JE_pred.copy()
 	JP = tt.tensor(JP)
@@ -181,4 +182,5 @@ def TT_VI(n=11,
 	    K += 1
 	    f2_r.write('K ' + str(K) + ' ' + str(Delta_p) + ' ' + str(Delta_e) + '\n')  
 	f2_r.close()
-    saveAll(n, JP, JE, UP, UE)
+	saveAll(n, JP, JE, UP, UE, 'with')
+	return JP, JE, UP, UE
